@@ -3,7 +3,7 @@ const app = express();
 
 app.set('port', process.env.PORT || 3000);
 
-app.use(express.urlencoded())
+app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(require('morgan')('dev'));
 
@@ -18,11 +18,11 @@ app.get('/departamento/:ciudad',async (req, res)=>{
     const { ciudad } = req.params;
 
     try{
-        const respuesta = await axios.get(`${externalApiURL}/${ciudad}`);
+        const {data: departamento} = await axios.get(`${externalApiURL}/${ciudad}`);
         
         // console.log(respuesta);
 
-        res.send(respuesta.data);
+        res.send(departamento);
     }catch(e){
         console.error(e);
         res.send('error');
